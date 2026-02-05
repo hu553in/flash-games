@@ -50,6 +50,19 @@
           "type": "image/png"
         }
       ]
+    },
+    {
+      "name": "Kingdom Rush",
+      "short_name": "Kingdom Rush",
+      "description": "Open Kingdom Rush directly",
+      "url": "./?game=KingdomRush",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ],
   "prefer_related_applications": false

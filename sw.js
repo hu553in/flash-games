@@ -1,4 +1,4 @@
-const CACHE_VERSION = "flash-games-v3";
+const CACHE_VERSION = "flash-games-v4";
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const CORE_ASSETS = [
@@ -14,6 +14,7 @@ const CORE_ASSETS = [
   "./icons/icon.svg",
   "./icons/apple-touch-icon.png",
   "./assets/swf/MusicCatch2.swf",
+  "./assets/swf/KingdomRush.swf",
   "./vendor/ruffle/ruffle.js",
   "./vendor/ruffle/core.ruffle.aa168e338c932fadbc73.js",
   "./vendor/ruffle/core.ruffle.0a77bb1c50674a76cdaf.js",

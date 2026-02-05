@@ -22,9 +22,6 @@ Allows running `.swf` games in a browser and installing them as an offline-capab
 - App shell caching
 - Game asset caching
 - Self-hosted Ruffle runtime (no CDN dependency)
-- Code split:
-  - `styles/main.css`
-  - `scripts/app.js`
 
 ---
 
@@ -38,17 +35,13 @@ Example:
 python3 -m http.server 5173
 ```
 
-Open:
-
-```
-http://localhost:5173
-```
+Then open [localhost:5173](http://localhost:5173).
 
 ---
 
 ## Offline verification
 
-Project includes an automated offline test using Playwright.
+The project includes an automated offline test using Playwright.
 
 ```bash
 pnpm i
@@ -67,19 +60,14 @@ The test:
 
 ### 1. Download Ruffle
 
-Download `web-selfhosted` from:
-
-https://github.com/ruffle-rs/ruffle/releases
+Download the latest `web-selfhosted` build from
+[github.com/ruffle-rs/ruffle/releases](https://github.com/ruffle-rs/ruffle/releases).
 
 ---
 
 ### 2. Replace runtime files
 
-Extract archive and replace files inside:
-
-```
-vendor/ruffle/
-```
+Extract the archive and replace files inside `vendor/ruffle/`.
 
 Expected files:
 
@@ -94,17 +82,13 @@ Expected files:
 Edit `sw.js`:
 
 - Increase `CACHE_VERSION`
-- Update filenames in `CORE_ASSETS` so they exactly match new Ruffle build
+- Update filenames in `CORE_ASSETS` so they exactly match the new Ruffle build
 
 ---
 
 ### 4. Verify loader path
 
-Ensure `index.html` still loads:
-
-```
-./vendor/ruffle/ruffle.js
-```
+Ensure `index.html` still loads `./vendor/ruffle/ruffle.js`.
 
 ---
 
@@ -115,15 +99,15 @@ pnpm i
 pnpm verify:offline
 ```
 
-If verification passes — the update is safe.
+If verification passes, the update is safe.
 
 ---
 
 ## How offline works
 
-- First online visit populates the cache
+- The first online visit populates the cache
 - Afterwards the app shell and cached games are available offline
-- Service worker automatically updates cached assets after new deployment
+- The service worker automatically updates cached assets after new deployment
 
 ---
 
@@ -140,7 +124,7 @@ scripts/              → Application logic
 styles/               → UI styles
 icons/                → PWA icons
 
-index.html            → App entry point
+index.html            → Application entry point
 sw.js                 → Service worker
 manifest.webmanifest  → PWA manifest
 offline.html          → Offline fallback page
