@@ -1,0 +1,12 @@
+{
+  "name": "flash-games",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Play preserved Flash games in your browser, online and offline.",
+  "scripts": {
+    "verify:offline": "node scripts/verify-offline.js"
+  },
+  "devDependencies": {
+    "playwright": "latest"
+  }
+}

@@ -4,170 +4,40 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Play preserved Flash games in your browser with installable offline support." />
+    <meta name="theme-color" content="#0d0d0d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Flash Games" />
+
     <title>Flash Games</title>
 
-    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="styles/main.css" />
 
-    <style>
-        :root {
-            --bg: #0d0d0d;
-            --panel: #1a1a1a;
-            --accent: #3fa9ff;
-            --text: #eaeaea;
-        }
-
-        html,
-        body {
-            margin: 0;
-            height: 100%;
-            background: var(--bg);
-            color: var(--text);
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background: var(--panel);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-        }
-
-        label {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        select {
-            background: #2a2a2a;
-            color: var(--text);
-            border: 1px solid #444;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        select:hover {
-            border-color: var(--accent);
-        }
-
-        #container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-
-        ruffle-player,
-        canvas {
-            max-width: 100%;
-            max-height: 100%;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
-            border-radius: 8px;
-        }
-    </style>
+    <script src="./vendor/ruffle/ruffle.js"></script>
+    <script src="scripts/app.js" defer></script>
 </head>
 
 <body>
     <header>
-        <label for="selector">Game:</label>
-        <select id="selector">
-            <option value="MusicCatch2">Music Catch 2</option>
-        </select>
+        <div class="header-left">
+            <label for="selector">Game:</label>
+            <select id="selector">
+                <option value="MusicCatch2">Music Catch 2</option>
+            </select>
+            <span id="connection" class="badge" aria-live="polite">Online</span>
+        </div>
+        <button id="install" class="install" hidden>Install app</button>
     </header>
 
-    <div id="container"></div>
+    <div id="container" role="application" aria-label="Flash game player"></div>
+    <div id="toast" class="toast" hidden></div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("container");
-            const selector = document.getElementById("selector");
-
-            let currentPlayer = null;
-            let loadSeq = 0;
-
-            function logException(context, e) {
-                if (e instanceof Error) {
-                    console.error(`${context}:`, e.message, e.stack);
-                    return;
-                }
-                console.error(`${context}:`, e);
-            }
-
-            window.addEventListener("error", (event) => {
-                const details = event.error ?? {
-                    message: event.message,
-                    file: event.filename,
-                    line: event.lineno,
-                    column: event.colno,
-                };
-                logException("Unhandled error", details);
-            });
-
-            window.addEventListener("unhandledrejection", (event) => {
-                logException("Unhandled promise rejection", event.reason);
-            });
-
-            function destroyPlayer() {
-                if (!currentPlayer) return;
-
-                // Detach from DOM and drop references so GC can reclaim WASM/WebGL resources.
-                try { currentPlayer.remove(); } catch (e) { logException("Failed to remove player", e); }
-                currentPlayer = null;
-            }
-
-            function createAndMountPlayer() {
-                const ruffle = window.RufflePlayer?.newest?.();
-                if (!ruffle) throw new Error("Ruffle is not available");
-
-                const player = ruffle.createPlayer();
-                player.id = "player";
-                player.style.width = "100%";
-                player.style.height = "100%";
-
-                container.innerHTML = "";
-                container.appendChild(player);
-
-                currentPlayer = player;
-            }
-
-            async function loadGame(name) {
-                const path = `assets/swf/${name}.swf`;
-                const mySeq = ++loadSeq;
-
-                try {
-                    // Always recreate player to avoid "stuck" state after failed loads.
-                    destroyPlayer();
-                    createAndMountPlayer();
-
-                    // Yield one frame to help some browsers release old GPU contexts sooner.
-                    await new Promise((r) => requestAnimationFrame(r));
-
-                    await currentPlayer.ruffle().load(path);
-                } catch (e) {
-                    logException(`Failed to load game: ${path}`, e);
-                } finally {
-                    // If a newer load started while we were awaiting, ignore any late results.
-                    if (mySeq !== loadSeq) return;
-                }
-            }
-
-            selector.addEventListener("change", () => {
-                loadGame(selector.value);
-            });
-
-            loadGame(selector.value);
-        });
-    </script>
+    <noscript>JavaScript is required to run this app.</noscript>
 </body>
 
 </html>

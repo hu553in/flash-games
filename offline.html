@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0d0d0d" />
+  <title>Flash Games - Offline</title>
+
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --card: #1a1a1a;
+      --text: #ececec;
+      --accent: #3fa9ff;
+      --muted: #b9b9b9;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top right, #1a293f, var(--bg) 45%);
+      color: var(--text);
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    main {
+      width: min(560px, 100%);
+      background: rgba(26, 26, 26, 0.95);
+      border: 1px solid #353535;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: rgba(63, 169, 255, 0.16);
+    }
+
+    a:hover {
+      background: rgba(63, 169, 255, 0.28);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>You are offline</h1>
+    <p>
+      Flash Games works offline after the first successful load. Connect to the internet once
+      to refresh games and assets.
+    </p>
+    <p>If you already opened a game before, cached content should still be available.</p>
+    <a href="./">Try again</a>
+  </main>
+</body>
+
+</html>
