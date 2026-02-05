@@ -116,6 +116,10 @@ canvas {
   z-index: 9;
 }
 
+.toast[hidden] {
+  display: none !important;
+}
+
 .toast button {
   border: 1px solid var(--accent);
   border-radius: 6px;
