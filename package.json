@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "description": "Play preserved Flash games in your browser, online and offline.",
   "scripts": {
-    "verify:offline": "node scripts/verify-offline.js"
+    "playwright:install": "pnpm playwright install chromium",
+    "verify:offline": "pnpm playwright:install && node scripts/verify-offline.js"
   },
   "devDependencies": {
     "playwright": "latest"
