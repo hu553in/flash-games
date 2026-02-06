@@ -1,4 +1,4 @@
-const CACHE_VERSION = "flash-games-v5";
+const CACHE_VERSION = "flash-games-v6";
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const CORE_ASSETS = [

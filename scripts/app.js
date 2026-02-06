@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     connectionBadge.classList.toggle("offline", !online);
   }
 
-  function showToast(message, actionLabel, action) {
+  function showToast(message, actionLabel, action, autoHide = true) {
     if (toastTimer) {
       clearTimeout(toastTimer);
       toastTimer = null;
@@ -58,16 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const button = document.createElement("button");
       button.textContent = actionLabel;
       button.addEventListener("click", () => {
-        action();
-        toast.hidden = true;
+        const shouldHide = action(button);
+        if (shouldHide !== false) {
+          toast.hidden = true;
+        }
       });
       toast.appendChild(button);
     }
 
     toast.hidden = false;
-    toastTimer = setTimeout(() => {
-      toast.hidden = true;
-    }, 7000);
+    if (autoHide) {
+      toastTimer = setTimeout(() => {
+        toast.hidden = true;
+      }, 7000);
+    }
   }
 
   window.addEventListener("error", (event) => {
@@ -179,10 +183,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const requestRefresh = () => {
         if (!registration.waiting) return;
-        showToast("Update available.", "Reload", () => {
+        showToast("Update available.", "Reload", (button) => {
+          const waiting = registration.waiting;
+          if (!waiting) return true;
+
+          button.disabled = true;
+          button.textContent = "Updating...";
           waitingForWorkerRefresh = true;
-          registration.waiting.postMessage({ type: "SKIP_WAITING" });
-        });
+          waiting.postMessage({ type: "SKIP_WAITING" });
+          return false;
+        }, false);
       };
 
       requestRefresh();

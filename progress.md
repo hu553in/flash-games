@@ -84,3 +84,16 @@ Original prompt: make it a full-featured PWA
   - Update hashed `./vendor/ruffle/...` entries and `CACHE_VERSION` in `sw.js`.
   - Re-check `index.html` Ruffle script path.
   - Final validation via `npm run verify:offline`.
+
+- Update toast interaction polish in `scripts/app.js` + `styles/main.css`:
+  - `showToast(...)` now supports optional non-auto-hide mode and lets action callbacks keep the toast visible.
+  - Service-worker `Update available` toast now disables the action button immediately on click, changes label to `Updating...`, and keeps the toast visible until controller handoff reload.
+  - Added `.toast button:disabled` styling for a clear in-progress visual state.
+  - Re-ran `pnpm verify:offline`: passed (`ok: true`, no console/page errors captured).
+
+- Fix SW update toast race in `scripts/app.js`:
+  - In the `Reload` action callback, capture and re-check `registration.waiting` at click time before disabling the button.
+  - If no waiting worker exists anymore (stale toast/race), return `true` to hide toast and avoid a null `postMessage` failure.
+
+- Bump service-worker cache version in `sw.js`:
+  - Updated `CACHE_VERSION` from `flash-games-v5` to `flash-games-v6` so clients pick up the latest `scripts/app.js`/`styles/main.css` changes under cache-first strategy.
