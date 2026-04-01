@@ -3,11 +3,17 @@
   "private": true,
   "version": "0.1.0",
   "description": "Play preserved Flash games in your browser, online and offline.",
+  "author": "hu553in",
   "scripts": {
     "playwright:install": "pnpm playwright install chromium",
-    "verify:offline": "pnpm playwright:install && node scripts/verify-offline.js"
+    "verify:offline": "pnpm playwright:install && node scripts/verify-offline.js",
+    "check": "lefthook run check --all-files --force",
+    "check:fix": "lefthook run check-fix --all-files --force",
+    "prepare": "lefthook install"
   },
   "devDependencies": {
-    "playwright": "latest"
+    "lefthook": "^2.1.4",
+    "playwright": "^1.58.1",
+    "prettier": "^3.8.1"
   }
 }

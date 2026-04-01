@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Play preserved Flash games in your browser with installable offline support." />
+    <meta
+      name="description"
+      content="Play preserved Flash games in your browser with installable offline support."
+    />
     <meta name="theme-color" content="#0d0d0d" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,25 +22,24 @@
 
     <script src="./vendor/ruffle/ruffle.js"></script>
     <script src="scripts/app.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="header-left">
-            <label for="selector">Game:</label>
-            <select id="selector">
-                <option value="MusicCatch2">Music Catch 2</option>
-                <option value="KingdomRush">Kingdom Rush</option>
-            </select>
-            <span id="connection" class="badge" aria-live="polite">Online</span>
-        </div>
-        <button id="install" class="install" hidden>Install app</button>
+      <div class="header-left">
+        <label for="selector">Game:</label>
+        <select id="selector">
+          <option value="MusicCatch2">Music Catch 2</option>
+          <option value="KingdomRush">Kingdom Rush</option>
+        </select>
+        <span id="connection" class="badge" aria-live="polite">Online</span>
+      </div>
+      <button id="install" class="install" hidden>Install app</button>
     </header>
 
     <div id="container" role="application" aria-label="Flash game player"></div>
     <div id="toast" class="toast" hidden></div>
 
     <noscript>JavaScript is required to run this app.</noscript>
-</body>
-
+  </body>
 </html>

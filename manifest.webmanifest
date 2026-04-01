@@ -10,10 +10,7 @@
   "background_color": "#0d0d0d",
   "theme_color": "#0d0d0d",
   "lang": "en-US",
-  "categories": [
-    "games",
-    "entertainment"
-  ],
+  "categories": ["games", "entertainment"],
   "icons": [
     {
       "src": "icons/icon-192.png",

@@ -1,0 +1,4 @@
+node_modules/
+vendor/
+pnpm-lock.yaml
+assets/swf/

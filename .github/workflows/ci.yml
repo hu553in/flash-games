@@ -32,4 +32,5 @@ jobs:
           key: playwright|${{ runner.os }}|${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             playwright|${{ runner.os }}|
+      - run: pnpm check
       - run: pnpm verify:offline

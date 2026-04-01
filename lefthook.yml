@@ -1,0 +1,27 @@
+output:
+  - execution
+  - failure
+
+pre-commit:
+  jobs:
+    - name: prettier
+      run: pnpm exec prettier --write .
+      stage_fixed: true
+
+    - name: svg-format
+      glob: '*.svg'
+      run: bash -lc 'for f in "$@"; do xmllint --format "$f" -o "$f"; done' -- {staged_files}
+      stage_fixed: true
+
+check:
+  jobs:
+    - name: svg-check
+      run: bash -lc 'find assets icons -type f -name "*.svg" -print0 | xargs -0 -n 1 xmllint --noout'
+
+check-fix:
+  jobs:
+    - name: prettier
+      run: pnpm exec prettier --write .
+
+    - name: svg-format
+      run: bash -lc 'find assets icons -type f -name "*.svg" -print0 | xargs -0 -I {} xmllint --format "{}" -o "{}"'
