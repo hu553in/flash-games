@@ -1,5 +1,11 @@
 README.md
 AGENTS.md
 package.json
-package-lock.json
+pnpm-lock.yaml
 .gitignore
+lefthook.yml
+.prettierignore
+.prettierrc.json
+.editorconfig
+.github/
+.vercelignore
