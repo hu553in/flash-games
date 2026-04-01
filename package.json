@@ -9,7 +9,7 @@
     "verify:offline": "pnpm playwright:install && node scripts/verify-offline.js",
     "check": "lefthook run check --all-files --force",
     "check:fix": "lefthook run check-fix --all-files --force",
-    "prepare": "lefthook install"
+    "prepare": "command -v lefthook && lefthook install || true"
   },
   "devDependencies": {
     "lefthook": "^2.1.4",
