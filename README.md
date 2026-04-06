@@ -3,9 +3,7 @@
 [![Vercel Deploy](https://deploy-badge.vercel.app/vercel/flash-games-hu553in)](https://flash-games-hu553in.vercel.app/)
 
 Flash game player powered by **Ruffle** with full **Progressive Web App (PWA)** support.
-Allows running `.swf` games in a browser and installing them as an offline-capable app.
-
----
+It runs `.swf` games in a browser and can be installed as an offline-capable app.
 
 ## Features
 
@@ -23,8 +21,6 @@ Allows running `.swf` games in a browser and installing them as an offline-capab
 - Game asset caching
 - Self-hosted Ruffle runtime (no CDN dependency)
 
----
-
 ## Local development
 
 Run any static HTTP server.
@@ -36,8 +32,6 @@ python3 -m http.server 5173
 ```
 
 Then open [localhost:5173](http://localhost:5173).
-
----
 
 ## Offline verification
 
@@ -54,16 +48,12 @@ The test:
 2. Reloads it in offline mode
 3. Fails if the app shell is not served from cache
 
----
-
 ## Updating Ruffle (self-hosted)
 
 ### 1. Download Ruffle
 
 Download the latest `web-selfhosted` build from
 [github.com/ruffle-rs/ruffle/releases](https://github.com/ruffle-rs/ruffle/releases).
-
----
 
 ### 2. Replace runtime files
 
@@ -75,8 +65,6 @@ Expected files:
 - `core.ruffle.*.js`
 - `*.wasm`
 
----
-
 ### 3. Update service worker
 
 Edit `sw.js`:
@@ -84,13 +72,9 @@ Edit `sw.js`:
 - Increase `CACHE_VERSION`
 - Update filenames in `CORE_ASSETS` so they exactly match the new Ruffle build
 
----
-
 ### 4. Verify loader path
 
 Ensure `index.html` still loads `./vendor/ruffle/ruffle.js`.
-
----
 
 ### 5. Validate build
 
@@ -101,19 +85,15 @@ pnpm verify:offline
 
 If verification passes, the update is safe.
 
----
-
 ## How offline works
 
 - The first online visit populates the cache
 - Afterwards the app shell and cached games are available offline
 - The service worker automatically updates cached assets after new deployment
 
----
+## Project structure
 
-## Project Structure
-
-```
+```text
 assets/
   swf/                → Flash game files
 
