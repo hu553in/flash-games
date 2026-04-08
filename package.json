@@ -12,8 +12,8 @@
     "prepare": "command -v lefthook && lefthook install || true"
   },
   "devDependencies": {
-    "lefthook": "^2.1.4",
-    "playwright": "^1.58.1",
+    "lefthook": "^2.1.5",
+    "playwright": "^1.59.1",
     "prettier": "^3.8.1"
   }
 }
