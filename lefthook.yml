@@ -5,7 +5,7 @@ output:
 pre-commit:
   jobs:
     - name: prettier
-      run: pnpm exec prettier --write {staged_files}
+      run: pnpm exec prettier -u --write {staged_files}
       stage_fixed: true
 
     - name: svg-format
@@ -21,7 +21,7 @@ check:
 check-fix:
   jobs:
     - name: prettier
-      run: pnpm exec prettier --write .
+      run: pnpm exec prettier -u --write .
 
     - name: svg-format
       run: bash -lc 'find assets icons -type f -name "*.svg" -print0 | xargs -0 -I {} xmllint --format "{}" -o "{}"'
