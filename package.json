@@ -2,7 +2,7 @@
   "name": "flash-games",
   "private": true,
   "version": "0.1.0",
-  "description": "Play preserved Flash games in your browser, online and offline.",
+  "description": "Flash game player powered by Ruffle with full Progressive Web App (PWA) support. It runs .swf games in a browser and can be installed as an offline-capable app.",
   "author": "hu553in",
   "scripts": {
     "playwright:install": "pnpm playwright install chromium",

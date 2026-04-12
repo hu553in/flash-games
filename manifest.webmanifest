@@ -1,7 +1,7 @@
 {
   "name": "Flash Games",
   "short_name": "Flash Games",
-  "description": "Play preserved Flash games in your browser, online and offline.",
+  "description": "Flash game player powered by Ruffle with full Progressive Web App (PWA) support. It runs .swf games in a browser and can be installed as an offline-capable app.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
@@ -10,7 +10,10 @@
   "background_color": "#0d0d0d",
   "theme_color": "#0d0d0d",
   "lang": "en-US",
-  "categories": ["games", "entertainment"],
+  "categories": [
+    "games",
+    "entertainment"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -38,7 +41,7 @@
     {
       "name": "Music Catch 2",
       "short_name": "Music Catch 2",
-      "description": "Open Music Catch 2 directly",
+      "description": "Open Music Catch 2 directly.",
       "url": "./?game=MusicCatch2",
       "icons": [
         {
@@ -51,7 +54,7 @@
     {
       "name": "Kingdom Rush",
       "short_name": "Kingdom Rush",
-      "description": "Open Kingdom Rush directly",
+      "description": "Open Kingdom Rush directly.",
       "url": "./?game=KingdomRush",
       "icons": [
         {

@@ -5,7 +5,7 @@ output:
 pre-commit:
   jobs:
     - name: prettier
-      run: pnpm exec prettier --write .
+      run: pnpm exec prettier --write {staged_files}
       stage_fixed: true
 
     - name: svg-format
