@@ -1,7 +1,6 @@
 version: 2
 
 updates:
-
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
@@ -21,7 +20,6 @@ updates:
       major:
         update-types:
           - major
-
   - package-ecosystem: npm
     directory: '/'
     schedule:
