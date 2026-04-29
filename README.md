@@ -1,5 +1,6 @@
 # Flash Games
 
+[![CI](https://github.com/hu553in/flash-games/actions/workflows/ci.yml/badge.svg)](https://github.com/hu553in/flash-games/actions/workflows/ci.yml)
 [![Vercel Deploy](https://deploy-badge.vercel.app/vercel/flash-games-hu553in)](https://flash-games-hu553in.vercel.app/)
 
 Flash game player powered by **Ruffle** with full **Progressive Web App (PWA)** support.
@@ -21,7 +22,7 @@ It runs `.swf` games in a browser and can be installed as an offline-capable app
 - Game asset caching
 - Self-hosted Ruffle runtime (no CDN dependency)
 
-## Local development
+## Development
 
 Run any static HTTP server.
 
@@ -48,7 +49,7 @@ The test:
 2. Reloads it in offline mode
 3. Fails if the app shell is not served from cache
 
-## Updating Ruffle (self-hosted)
+## Updating Ruffle
 
 ### 1. Download Ruffle
 
