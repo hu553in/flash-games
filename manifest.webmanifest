@@ -1,7 +1,7 @@
 {
   "name": "Flash Games",
   "short_name": "Flash Games",
-  "description": "Flash game player powered by Ruffle with full Progressive Web App (PWA) support. It runs .swf games in a browser and can be installed as an offline-capable app.",
+  "description": "Flash game player powered by Ruffle with offline-capable Progressive Web App (PWA) support.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
@@ -10,10 +10,7 @@
   "background_color": "#0d0d0d",
   "theme_color": "#0d0d0d",
   "lang": "en-US",
-  "categories": [
-    "games",
-    "entertainment"
-  ],
+  "categories": ["games", "entertainment"],
   "icons": [
     {
       "src": "icons/icon-192.png",

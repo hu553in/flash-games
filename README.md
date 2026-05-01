@@ -1,10 +1,10 @@
-# Flash Games
+# Flash games
 
 [![CI](https://github.com/hu553in/flash-games/actions/workflows/ci.yml/badge.svg)](https://github.com/hu553in/flash-games/actions/workflows/ci.yml)
 [![Vercel Deploy](https://deploy-badge.vercel.app/vercel/flash-games-hu553in)](https://flash-games-hu553in.vercel.app/)
 
-Flash game player powered by **Ruffle** with full **Progressive Web App (PWA)** support.
-It runs `.swf` games in a browser and can be installed as an offline-capable app.
+Flash game player powered by **Ruffle** with offline-capable **Progressive Web App (PWA)** support.
+It runs `.swf` games in a browser and can be installed as an app.
 
 ## Features
 
@@ -16,7 +16,7 @@ It runs `.swf` games in a browser and can be installed as an offline-capable app
 - In-app update prompt when a new version is available
 - Home screen icons (`icons/*`)
 
-### Performance & architecture
+### Performance and architecture
 
 - App shell caching
 - Game asset caching
@@ -96,17 +96,17 @@ If verification passes, the update is safe.
 
 ```text
 assets/
-  swf/                → Flash game files
+  swf/                -> Flash game files
 
 vendor/
-  ruffle/             → Self-hosted Ruffle runtime
+  ruffle/             -> Self-hosted Ruffle runtime
 
-scripts/              → Application logic
-styles/               → UI styles
-icons/                → PWA icons
+scripts/              -> Application logic
+styles/               -> UI styles
+icons/                -> PWA icons
 
-index.html            → Application entry point
-sw.js                 → Service worker
-manifest.webmanifest  → PWA manifest
-offline.html          → Offline fallback page
+index.html            -> Application entry point
+sw.js                 -> Service worker
+manifest.webmanifest  -> PWA manifest
+offline.html          -> Offline fallback page
 ```
