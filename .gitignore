@@ -1,4 +1,11 @@
 .DS_Store
 Thumbs.db
-output/
 node_modules/
+build/
+dist/
+out/
+output/
+.vscode/
+*.pem
+*.log
+.env*

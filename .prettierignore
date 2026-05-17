@@ -1,4 +1,9 @@
 node_modules/
+build/
+dist/
+out/
+output/
+.vscode/
 vendor/
-pnpm-lock.yaml
 assets/swf/
+pnpm-lock.yaml
