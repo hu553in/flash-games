@@ -1,0 +1,19 @@
+{
+  "name": "flash-games",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Flash game player powered by Ruffle with offline-capable Progressive Web App (PWA) support.",
+  "author": "hu553in",
+  "scripts": {
+    "playwright:install": "pnpm playwright install chromium",
+    "verify:offline": "pnpm playwright:install && node scripts/verify-offline.js",
+    "check": "lefthook run check --all-files --force",
+    "check:fix": "lefthook run check-fix --all-files --force",
+    "prepare": "command -v lefthook && lefthook install || true"
+  },
+  "devDependencies": {
+    "lefthook": "^2.1.9",
+    "playwright": "^1.61.0",
+    "prettier": "^3.8.4"
+  }
+}
