@@ -3,110 +3,77 @@
 [![CI](https://github.com/hu553in/flash-games/actions/workflows/ci.yml/badge.svg)](https://github.com/hu553in/flash-games/actions/workflows/ci.yml)
 [![Vercel Deploy](https://deploy-badge.vercel.app/vercel/flash-games-hu553in)](https://flash-games-hu553in.vercel.app/)
 
-Flash game player powered by **Ruffle** with offline-capable **Progressive Web App (PWA)** support.
-It runs `.swf` games in a browser and can be installed as an app.
+Static browser player for `.swf` games powered by self-hosted Ruffle. The app is installable as a
+PWA and keeps the app shell, Ruffle runtime, and listed games available offline after the first
+online load.
 
-## Features
+## What it does
 
-### PWA
+- Runs bundled Flash games from `assets/swf` through the Ruffle runtime in `vendor/ruffle`
+- Keeps the selected game in the `?game=` URL parameter
+- Provides PWA metadata, install icons, an offline fallback page, and an install prompt
+- Caches the app shell, game assets, and Ruffle files through `sw.js`
+- Shows an in-app reload action when a new service worker is ready
 
-- Installable application (`manifest.webmanifest`)
-- Offline support via service worker (`sw.js`)
-- Offline fallback page (`offline.html`)
-- In-app update prompt when a new version is available
-- Home screen icons (`icons/*`)
+## Requirements
 
-### Performance and architecture
+- Node.js and pnpm for checks
+- `xmllint` for SVG checks; CI installs it through `libxml2-utils`
+- Any static HTTP server for manual local testing
 
-- App shell caching
-- Game asset caching
-- Self-hosted Ruffle runtime (no CDN dependency)
+## Setup
 
-## Development
-
-Run any static HTTP server.
-
-Example:
+Install dependencies and serve the repository root:
 
 ```bash
+pnpm i
 python3 -m http.server 5173
 ```
 
-Then open [localhost:5173](http://localhost:5173).
+Open <http://localhost:5173>. There is no build step; Vercel serves the static files directly.
 
-## Offline verification
+## Usage
 
-The project includes an automated offline test using Playwright.
+- Game choices are static `<option>` entries in `index.html`
+- Game files live in `assets/swf`
+- Add a new game file to `CORE_ASSETS` in `sw.js` when it must be precached for first-load offline
+  usage
+- Bump `CACHE_VERSION` in `sw.js` when core cached assets change
+
+## Development
 
 ```bash
-pnpm i
+pnpm check
+pnpm check:fix
 pnpm verify:offline
 ```
 
-The test:
-
-1. Loads the app online
-2. Reloads it in offline mode
-3. Fails if the app shell is not served from cache
+`pnpm verify:offline` installs Playwright Chromium, starts a local static server, loads the app
+online, switches the browser context offline, reloads the page, and writes
+`output/verify-offline.png`.
 
 ## Updating Ruffle
 
-### 1. Download Ruffle
-
 Download the latest `web-selfhosted` build from
-[github.com/ruffle-rs/ruffle/releases](https://github.com/ruffle-rs/ruffle/releases).
+[github.com/ruffle-rs/ruffle/releases](https://github.com/ruffle-rs/ruffle/releases), replace
+`vendor/ruffle/`, then update `CORE_ASSETS` in `sw.js` so the filenames match the new
+`core.ruffle.*.js` and `*.wasm` files. Keep `index.html` loading `./vendor/ruffle/ruffle.js`.
 
-### 2. Replace runtime files
-
-Extract the archive and replace files inside `vendor/ruffle/`.
-
-Expected files:
-
-- `ruffle.js`
-- `core.ruffle.*.js`
-- `*.wasm`
-
-### 3. Update service worker
-
-Edit `sw.js`:
-
-- Increase `CACHE_VERSION`
-- Update filenames in `CORE_ASSETS` so they exactly match the new Ruffle build
-
-### 4. Verify loader path
-
-Ensure `index.html` still loads `./vendor/ruffle/ruffle.js`.
-
-### 5. Validate build
-
-```bash
-pnpm i
-pnpm verify:offline
-```
-
-If verification passes, the update is safe.
-
-## How offline works
-
-- The first online visit populates the cache
-- Afterwards the app shell and cached games are available offline
-- The service worker automatically updates cached assets after new deployment
+Run `pnpm verify:offline` after every Ruffle or service-worker change.
 
 ## Project structure
 
 ```text
 assets/
   swf/                -> Flash game files
-
+icons/                -> PWA icons
+scripts/              -> Application logic
+styles/               -> UI styles
 vendor/
   ruffle/             -> Self-hosted Ruffle runtime
 
-scripts/              -> Application logic
-styles/               -> UI styles
-icons/                -> PWA icons
-
 index.html            -> Application entry point
-sw.js                 -> Service worker
 manifest.webmanifest  -> PWA manifest
 offline.html          -> Offline fallback page
+sw.js                 -> Service worker
 ```

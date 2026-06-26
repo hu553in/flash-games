@@ -21,7 +21,7 @@ pre-commit:
 check:
   jobs:
     - name: svg-check
-      run:
+      run: >-
         bash -lc 'find assets icons -type f -name "*.svg" -print0 | xargs -0 -n 1 xmllint --noout'
 
 check-fix:
@@ -30,6 +30,6 @@ check-fix:
       run: pnpm exec prettier -u --write .
 
     - name: svg-format
-      run:
+      run: >-
         bash -lc 'find assets icons -type f -name "*.svg" -print0 | xargs -0 -I {} xmllint --format
         "{}" -o "{}"'
