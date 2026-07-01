@@ -7,22 +7,21 @@ settings:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@commitlint/cli':
-        specifier: ^21.0.2
+        specifier: ^21.2.0
         version: 21.2.0(@types/node@26.0.1)(typescript@6.0.3)
       '@commitlint/config-conventional':
-        specifier: ^21.0.2
+        specifier: ^21.2.0
         version: 21.2.0
-    devDependencies:
       lefthook:
         specifier: ^2.1.9
         version: 2.1.9
       playwright:
-        specifier: ^1.61.0
+        specifier: ^1.61.1
         version: 1.61.1
       prettier:
-        specifier: ^3.8.4
+        specifier: ^3.9.4
         version: 3.9.4
 
 packages:
