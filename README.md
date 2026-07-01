@@ -54,7 +54,7 @@ online, switches the browser context offline, reloads the page, and writes
 
 ## Updating Ruffle
 
-Download the latest `web-selfhosted` build from
+Download a `web-selfhosted` build from
 [github.com/ruffle-rs/ruffle/releases](https://github.com/ruffle-rs/ruffle/releases), replace
 `vendor/ruffle/`, then update `CORE_ASSETS` in `sw.js` so the filenames match the new
 `core.ruffle.*.js` and `*.wasm` files. Keep `index.html` loading `./vendor/ruffle/ruffle.js`.
