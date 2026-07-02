@@ -20,6 +20,9 @@ pre-commit:
 
 check:
   jobs:
+    - name: prettier
+      run: pnpm exec prettier -u --check .
+
     - name: svg-check
       run: >-
         bash -lc 'find assets icons -type f -name "*.svg" -print0 | xargs -0 -n 1 xmllint --noout'
