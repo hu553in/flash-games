@@ -1,12 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('container');
-  const selector = document.getElementById('selector');
-  const installButton = document.getElementById('install');
-  const connectionBadge = document.getElementById('connection');
-  const toast = document.getElementById('toast');
+const syncUrlWithSelection = (name) => {
+  const url = new URL(window.location.href);
+  url.searchParams.set("game", name);
+  window.history.replaceState({}, "", url);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector("#container");
+  const selector = document.querySelector("#selector");
+  const installButton = document.querySelector("#install");
+  const connectionBadge = document.querySelector("#connection");
+  const toast = document.querySelector("#toast");
 
   let currentPlayer = null;
-  let loadSeq = 0;
   let deferredInstallPrompt = null;
   let toastTimer = null;
   let waitingForWorkerRefresh = false;
@@ -18,29 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error(`${context}:`, error);
     }
 
-    if (toastMessage) showToast(toastMessage);
+    if (toastMessage) {
+      showToast(toastMessage);
+    }
   }
 
   function isKnownGame(name) {
-    return [...selector.options].some(option => option.value === name);
-  }
-
-  function syncUrlWithSelection(name) {
-    const url = new URL(window.location.href);
-    url.searchParams.set('game', name);
-    window.history.replaceState({}, '', url);
+    return [...selector.options].some((option) => option.value === name);
   }
 
   function getInitialSelection() {
-    const preferred = new URLSearchParams(window.location.search).get('game');
-    if (preferred && isKnownGame(preferred)) return preferred;
+    const preferred = new URLSearchParams(window.location.search).get("game");
+    if (preferred && isKnownGame(preferred)) {
+      return preferred;
+    }
     return selector.value;
   }
 
   function setOnlineBadge() {
     const online = navigator.onLine;
-    connectionBadge.textContent = online ? 'Online' : 'Offline';
-    connectionBadge.classList.toggle('offline', !online);
+    connectionBadge.textContent = online ? "Online" : "Offline";
+    connectionBadge.classList.toggle("offline", !online);
   }
 
   function showToast(message, actionLabel, action, autoHide = true) {
@@ -48,22 +51,22 @@ document.addEventListener('DOMContentLoaded', () => {
       clearTimeout(toastTimer);
       toastTimer = null;
     }
-    toast.innerHTML = '';
+    toast.innerHTML = "";
 
-    const text = document.createElement('span');
+    const text = document.createElement("span");
     text.textContent = message;
-    toast.appendChild(text);
+    toast.append(text);
 
-    if (actionLabel && typeof action === 'function') {
-      const button = document.createElement('button');
+    if (actionLabel && typeof action === "function") {
+      const button = document.createElement("button");
       button.textContent = actionLabel;
-      button.addEventListener('click', () => {
+      button.addEventListener("click", () => {
         const shouldHide = action(button);
         if (shouldHide !== false) {
           toast.hidden = true;
         }
       });
-      toast.appendChild(button);
+      toast.append(button);
     }
 
     toast.hidden = false;
@@ -74,72 +77,75 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  window.addEventListener('error', event => {
+  window.addEventListener("error", (event) => {
     const details = event.error ?? {
-      message: event.message,
+      column: event.colno,
       file: event.filename,
       line: event.lineno,
-      column: event.colno,
+      message: event.message,
     };
-    reportError('Unhandled error', details);
+    reportError("Unhandled error", details);
   });
 
-  window.addEventListener('unhandledrejection', event => {
-    reportError('Unhandled promise rejection', event.reason);
+  window.addEventListener("unhandledrejection", (event) => {
+    reportError("Unhandled promise rejection", event.reason);
   });
 
-  window.addEventListener('online', setOnlineBadge);
-  window.addEventListener('offline', setOnlineBadge);
+  window.addEventListener("online", setOnlineBadge);
+  window.addEventListener("offline", setOnlineBadge);
 
   function destroyPlayer() {
-    if (!currentPlayer) return;
+    if (!currentPlayer) {
+      return;
+    }
 
     try {
       currentPlayer.remove();
     } catch (error) {
-      reportError('Failed to remove player', error);
+      reportError("Failed to remove player", error);
     }
     currentPlayer = null;
   }
 
   function createAndMountPlayer() {
     const ruffle = window.RufflePlayer?.newest?.();
-    if (!ruffle) throw new Error('Ruffle is not available');
+    if (!ruffle) {
+      throw new Error("Ruffle is not available");
+    }
 
     const player = ruffle.createPlayer();
-    player.id = 'player';
-    player.style.width = '100%';
-    player.style.height = '100%';
+    player.id = "player";
+    player.style.width = "100%";
+    player.style.height = "100%";
 
-    container.innerHTML = '';
-    container.appendChild(player);
+    container.innerHTML = "";
+    container.append(player);
 
     currentPlayer = player;
   }
 
   async function loadGame(name) {
     const path = `assets/swf/${name}.swf`;
-    const mySeq = ++loadSeq;
 
     try {
       destroyPlayer();
       createAndMountPlayer();
 
-      await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise((resolve) => {
+        requestAnimationFrame(resolve);
+      });
 
       await currentPlayer.ruffle().load(path);
     } catch (error) {
       reportError(
         `Failed to load game: ${path}`,
         error,
-        'Could not load the game. Please try again.'
+        "Could not load the game. Please try again."
       );
-    } finally {
-      if (mySeq !== loadSeq) return;
     }
   }
 
-  selector.addEventListener('change', () => {
+  selector.addEventListener("change", () => {
     syncUrlWithSelection(selector.value);
     loadGame(selector.value);
   });
@@ -150,52 +156,60 @@ document.addEventListener('DOMContentLoaded', () => {
   setOnlineBadge();
   loadGame(initialSelection);
 
-  window.addEventListener('beforeinstallprompt', event => {
+  window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     installButton.hidden = false;
   });
 
-  installButton.addEventListener('click', async () => {
-    if (!deferredInstallPrompt) return;
+  installButton.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) {
+      return;
+    }
     deferredInstallPrompt.prompt();
     try {
       await deferredInstallPrompt.userChoice;
     } catch (error) {
-      reportError('Install prompt failed', error, 'Could not install the app.');
+      reportError("Install prompt failed", error, "Could not install the app.");
     } finally {
       deferredInstallPrompt = null;
       installButton.hidden = true;
     }
   });
 
-  window.addEventListener('appinstalled', () => {
+  window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
     installButton.hidden = true;
-    showToast('Flash Games installed.');
+    showToast("Flash Games installed.");
   });
 
   async function registerServiceWorker() {
-    if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
+    if (!("serviceWorker" in navigator) || !window.isSecureContext) {
+      return;
+    }
 
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js', {
-        scope: './',
+      const registration = await navigator.serviceWorker.register("./sw.js", {
+        scope: "./",
       });
 
       const requestRefresh = () => {
-        if (!registration.waiting) return;
+        if (!registration.waiting) {
+          return;
+        }
         showToast(
-          'Update available.',
-          'Reload',
-          button => {
-            const waiting = registration.waiting;
-            if (!waiting) return true;
+          "Update available.",
+          "Reload",
+          (button) => {
+            const { waiting } = registration;
+            if (!waiting) {
+              return true;
+            }
 
             button.disabled = true;
-            button.textContent = 'Updating...';
+            button.textContent = "Updating...";
             waitingForWorkerRefresh = true;
-            waiting.postMessage({ type: 'SKIP_WAITING' });
+            waiting.postMessage({ type: "SKIP_WAITING" });
             return false;
           },
           false
@@ -204,23 +218,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
       requestRefresh();
 
-      registration.addEventListener('updatefound', () => {
+      registration.addEventListener("updatefound", () => {
         const incoming = registration.installing;
-        if (!incoming) return;
+        if (!incoming) {
+          return;
+        }
 
-        incoming.addEventListener('statechange', () => {
-          if (incoming.state === 'installed' && navigator.serviceWorker.controller) {
+        incoming.addEventListener("statechange", () => {
+          if (
+            incoming.state === "installed" &&
+            navigator.serviceWorker.controller
+          ) {
             requestRefresh();
           }
         });
       });
 
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!waitingForWorkerRefresh) return;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!waitingForWorkerRefresh) {
+          return;
+        }
         window.location.reload();
       });
     } catch (error) {
-      reportError('Service worker registration failed', error, 'Offline features are unavailable.');
+      reportError(
+        "Service worker registration failed",
+        error,
+        "Offline features are unavailable."
+      );
     }
   }
 

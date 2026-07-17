@@ -5,34 +5,12 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - '**'
   workflow_dispatch:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
     permissions:
       contents: read
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 26
-          cache: 'pnpm'
-      - run: pnpm i --frozen-lockfile
-      - uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright|${{ runner.os }}|${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            playwright|${{ runner.os }}|
-      - uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: libxml2-utils
-          version: 1.0
-      - run: pnpm check
-      - run: pnpm verify:offline
+    uses: hu553in/common-things/.github/workflows/check-bun.yml@main
+    with:
+      cache_playwright: true
