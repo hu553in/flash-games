@@ -6,6 +6,10 @@ dist/
 out/
 output/
 .vscode/
+.idea/
+*.iml
 *.pem
 *.log
 .env*
+!.env.example
+!.env.example.*

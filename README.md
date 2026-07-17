@@ -17,16 +17,15 @@ online load.
 
 ## Requirements
 
-- Node.js and pnpm for checks
-- `xmllint` for SVG checks; CI installs it through `libxml2-utils`
-- Any static HTTP server for manual local testing
+- Bun 1.3.14 for checks
+- Python 3 for local serving and the offline check
 
 ## Setup
 
 Install dependencies and serve the repository root:
 
 ```bash
-pnpm i
+bun i
 python3 -m http.server 5173
 ```
 
@@ -43,23 +42,22 @@ Open <http://localhost:5173>. There is no build step; Vercel serves the static f
 ## Development
 
 ```bash
-pnpm check
-pnpm check:fix
-pnpm verify:offline
+bun check
+bun check:fix
+bun check:offline
 ```
 
-`pnpm verify:offline` installs Playwright Chromium, starts a local static server, loads the app
-online, switches the browser context offline, reloads the page, and writes
-`output/verify-offline.png`.
+`bun check:offline` installs Playwright Chromium, starts a local static server, loads the app
+online, switches the browser context offline, and verifies the cached app after a reload. Failure
+artifacts are written under `output/playwright/`.
 
 ## Updating Ruffle
 
-Download a `web-selfhosted` build from
-[github.com/ruffle-rs/ruffle/releases](https://github.com/ruffle-rs/ruffle/releases), replace
-`vendor/ruffle/`, then update `CORE_ASSETS` in `sw.js` so the filenames match the new
-`core.ruffle.*.js` and `*.wasm` files. Keep `index.html` loading `./vendor/ruffle/ruffle.js`.
+Download the upstream `web-selfhosted` release and replace the runtime files and licenses in
+`vendor/ruffle/`. Update `CORE_ASSETS` and increment `CACHE_VERSION` in `sw.js` when the runtime
+file names change. Keep `index.html` loading `./vendor/ruffle/ruffle.js`.
 
-Run `pnpm verify:offline` after every Ruffle or service-worker change.
+Run `bun check:offline` after every Ruffle or service-worker change.
 
 ## Project structure
 
@@ -69,11 +67,13 @@ assets/
 icons/                -> PWA icons
 scripts/              -> Application logic
 styles/               -> UI styles
+tests/                -> Offline browser test
 vendor/
   ruffle/             -> Self-hosted Ruffle runtime
 
 index.html            -> Application entry point
 manifest.webmanifest  -> PWA manifest
 offline.html          -> Offline fallback page
+playwright.config.js  -> Browser test configuration
 sw.js                 -> Service worker
 ```
