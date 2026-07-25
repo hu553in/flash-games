@@ -22,11 +22,11 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
-    "knip": "^6.27.0",
+    "knip": "^6.29.0",
     "lefthook": "^2.1.10",
-    "oxfmt": "^0.59.0",
-    "oxlint": "^1.74.0",
-    "stylelint": "^17.14.0",
+    "oxfmt": "^0.60.0",
+    "oxlint": "^1.75.0",
+    "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
     "ultracite": "^7.9.4"
   },
