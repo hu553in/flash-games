@@ -16,9 +16,9 @@ test("keeps the player available offline", async ({ context, page }) => {
     .toBe(true);
 
   await context.setOffline(true);
+  await expect(page.locator("#connection")).toHaveText("Offline");
   await page.reload({ waitUntil: "domcontentloaded" });
 
-  await expect(page.locator("#connection")).toHaveText("Offline");
   await expect(page.locator("ruffle-player")).toBeAttached();
   await expect
     .poll(() => page.evaluate(() => Boolean(window.RufflePlayer)))
