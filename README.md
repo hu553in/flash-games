@@ -17,8 +17,8 @@ online load.
 
 ## Requirements
 
-- Bun 1.3.14 for checks
-- Python 3 for local serving and the offline check
+- Bun for checks
+- Python for local serving and the offline check
 
 ## Setup
 
