@@ -15,7 +15,7 @@
     "check:renovate": "bunx --package renovate renovate-config-validator --strict --no-global renovate.json",
     "check:unused": "knip",
     "check:vulns": "bun audit --prod --audit-level=high",
-    "check:offline": "bun playwright:install && bun run test:offline",
+    "check:offline": "bun playwright:install && bun test:offline",
     "check": "bun lint && bun check:hooks && bun check:workflows && bun check:renovate && bun check:unused && bun check:vulns && bun check:offline",
     "check:fix": "bun lint:fix && bun check",
     "test:offline": "playwright test",
