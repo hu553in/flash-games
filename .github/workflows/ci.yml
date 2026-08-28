@@ -13,4 +13,4 @@ jobs:
       contents: read
     uses: hu553in/common-things/.github/workflows/check-bun.yml@main
     with:
-      cache_playwright: true
+      playwright: true
