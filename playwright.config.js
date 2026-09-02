@@ -1,7 +1,8 @@
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-  outputDir: "./output/playwright",
+  forbidOnly: Boolean(process.env.CI),
+  outputDir: "test-results",
   reporter: "line",
   testDir: "./tests",
   use: {

@@ -4,7 +4,7 @@ node_modules/
 build/
 dist/
 out/
-output/
+test-results/
 .vscode/
 .idea/
 *.iml

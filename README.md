@@ -49,7 +49,7 @@ bun check:offline
 
 `bun check:offline` installs Playwright Chromium, starts a local static server, loads the app
 online, switches the browser context offline, and verifies the cached app after a reload. Failure
-artifacts are written under `output/playwright/`.
+artifacts are written under `test-results/`.
 
 ## Updating Ruffle
 
