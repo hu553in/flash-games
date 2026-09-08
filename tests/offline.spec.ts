@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("keeps the player available offline", async ({ context, page }) => {
-  const pageErrors = [];
+  const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(String(error)));
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -23,5 +23,15 @@ test("keeps the player available offline", async ({ context, page }) => {
   await expect
     .poll(() => page.evaluate(() => Boolean(window.RufflePlayer)))
     .toBe(true);
+
+  const [gameResponse] = await Promise.all([
+    page.waitForResponse("**/assets/swf/KingdomRush.swf"),
+    page.locator("#selector").selectOption("KingdomRush"),
+  ]);
+  expect(gameResponse.ok()).toBe(true);
+  expect(gameResponse.fromServiceWorker()).toBe(true);
+  await expect(page).toHaveURL(/\?game=KingdomRush$/u);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.locator("#selector")).toHaveValue("KingdomRush");
   expect(pageErrors).toEqual([]);
 });

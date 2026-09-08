@@ -1,4 +1,6 @@
-const CACHE_VERSION = "flash-games-v7";
+declare const self: ServiceWorkerGlobalScope;
+
+const CACHE_VERSION = "flash-games-v8";
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const CORE_ASSETS = [
@@ -53,7 +55,7 @@ self.addEventListener("message", (event) => {
   self.skipWaiting();
 });
 
-const cacheFirst = async (request) => {
+const cacheFirst = async (request: Request) => {
   const cached = await caches.match(request, { ignoreSearch: true });
   if (cached) {
     return cached;
@@ -67,7 +69,7 @@ const cacheFirst = async (request) => {
   return response;
 };
 
-const staleWhileRevalidate = async (request) => {
+const staleWhileRevalidate = async (request: Request) => {
   const cache = await caches.open(RUNTIME_CACHE);
   const cached = await cache.match(request);
 
@@ -94,7 +96,7 @@ const staleWhileRevalidate = async (request) => {
   throw new Error("Network request failed");
 };
 
-const networkFirstNavigation = async (request) => {
+const networkFirstNavigation = async (request: Request) => {
   try {
     const response = await fetch(request);
     const cache = await caches.open(RUNTIME_CACHE);

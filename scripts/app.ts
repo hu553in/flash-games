@@ -1,34 +1,30 @@
-const syncUrlWithSelection = (name) => {
+const syncUrlWithSelection = (name: string) => {
   const url = new URL(window.location.href);
   url.searchParams.set("game", name);
   window.history.replaceState({}, "", url);
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.querySelector("#container");
-  const selector = document.querySelector("#selector");
-  const installButton = document.querySelector("#install");
-  const connectionBadge = document.querySelector("#connection");
-  const toast = document.querySelector("#toast");
+const requireElement = <T extends Element>(selector: string): T => {
+  const element = document.querySelector<T>(selector);
+  if (!element) {
+    throw new Error(`Required player control is missing: ${selector}`);
+  }
+  return element;
+};
 
-  let currentPlayer = null;
-  let deferredInstallPrompt = null;
-  let toastTimer = null;
+document.addEventListener("DOMContentLoaded", () => {
+  const container = requireElement<HTMLDivElement>("#container");
+  const selector = requireElement<HTMLSelectElement>("#selector");
+  const installButton = requireElement<HTMLButtonElement>("#install");
+  const connectionBadge = requireElement<HTMLSpanElement>("#connection");
+  const toast = requireElement<HTMLDivElement>("#toast");
+
+  let currentPlayer: RufflePlayerElement | null = null;
+  let deferredInstallPrompt: BeforeInstallPromptEvent | null = null;
+  let toastTimer: ReturnType<typeof setTimeout> | null = null;
   let waitingForWorkerRefresh = false;
 
-  function reportError(context, error, toastMessage = null) {
-    if (error instanceof Error) {
-      console.error(`${context}:`, error.message, error.stack);
-    } else {
-      console.error(`${context}:`, error);
-    }
-
-    if (toastMessage) {
-      showToast(toastMessage);
-    }
-  }
-
-  function isKnownGame(name) {
+  function isKnownGame(name: string) {
     return [...selector.options].some((option) => option.value === name);
   }
 
@@ -46,7 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
     connectionBadge.classList.toggle("offline", !online);
   }
 
-  function showToast(message, actionLabel, action, autoHide = true) {
+  function showToast(
+    message: string,
+    actionLabel?: string,
+    action?: (button: HTMLButtonElement) => boolean,
+    autoHide = true
+  ) {
     if (toastTimer) {
       clearTimeout(toastTimer);
       toastTimer = null;
@@ -74,6 +75,18 @@ document.addEventListener("DOMContentLoaded", () => {
       toastTimer = setTimeout(() => {
         toast.hidden = true;
       }, 7000);
+    }
+  }
+
+  function reportError(context: string, error: unknown, toastMessage?: string) {
+    if (error instanceof Error) {
+      console.error(`${context}:`, error.message, error.stack);
+    } else {
+      console.error(`${context}:`, error);
+    }
+
+    if (toastMessage) {
+      showToast(toastMessage);
     }
   }
 
@@ -122,20 +135,21 @@ document.addEventListener("DOMContentLoaded", () => {
     container.append(player);
 
     currentPlayer = player;
+    return player;
   }
 
-  async function loadGame(name) {
+  async function loadGame(name: string) {
     const path = `assets/swf/${name}.swf`;
 
     try {
       destroyPlayer();
-      createAndMountPlayer();
+      const player = createAndMountPlayer();
 
       await new Promise((resolve) => {
         requestAnimationFrame(resolve);
       });
 
-      await currentPlayer.ruffle().load(path);
+      await player.ruffle().load(path);
     } catch (error) {
       reportError(
         `Failed to load game: ${path}`,

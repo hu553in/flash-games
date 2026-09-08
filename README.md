@@ -17,44 +17,51 @@ online load.
 
 ## Requirements
 
-- Bun for checks
+- Bun for dependencies, builds, and checks
 - Python for local serving and the offline check
 
 ## Setup
 
-Install dependencies and serve the repository root:
+Install dependencies, build, and serve the site:
 
 ```bash
 bun i
-python3 -m http.server 5173
+bun dev
 ```
 
-Open <http://localhost:5173>. There is no build step; Vercel serves the static files directly.
+Open <http://localhost:5173>. Restart `bun dev` after source changes to rebuild the site.
+
+`bun run build` compiles the application and service worker with Bun and copies static assets to
+`dist/`. Vercel runs this command and serves `dist/`.
 
 ## Usage
 
 - Game choices are static `<option>` entries in `index.html`
 - Game files live in `assets/swf`
-- Add a new game file to `CORE_ASSETS` in `sw.js` when it must be precached for first-load offline
+- Add a new game file to `CORE_ASSETS` in `sw.ts` when it must be precached for first-load offline
   usage
-- Bump `CACHE_VERSION` in `sw.js` when core cached assets change
+- Bump `CACHE_VERSION` in `sw.ts` when core cached assets change
 
 ## Development
 
 ```bash
 bun check
 bun check:fix
+bun check:types
 bun check:offline
 ```
 
-`bun check:offline` installs Playwright Chromium, starts a local static server, loads the app
-online, switches the browser context offline, and verifies the cached app after a reload. Failure
-artifacts are written under `test-results/`.
+`bun check:types` checks application, tooling, and test types, with a separate WebWorker environment
+for `sw.ts`.
+
+`bun check:offline` installs Playwright Chromium, builds the site, starts its own static server for
+`dist/` on port 4173, loads the app online, switches the browser context offline, and verifies the
+cached app after a reload. Failure artifacts are written under `test-results/`.
 
 ## Updating Ruffle
 
 Download the upstream `web-selfhosted` release and replace the runtime files and licenses in
-`vendor/ruffle/`. Update `CORE_ASSETS` and increment `CACHE_VERSION` in `sw.js` when the runtime
+`vendor/ruffle/`. Update `CORE_ASSETS` and increment `CACHE_VERSION` in `sw.ts` when the runtime
 file names change. Keep `index.html` loading `./vendor/ruffle/ruffle.js`.
 
 Run `bun check:offline` after every Ruffle or service-worker change.
@@ -65,7 +72,7 @@ Run `bun check:offline` after every Ruffle or service-worker change.
 assets/
   swf/                -> Flash game files
 icons/                -> PWA icons
-scripts/              -> Application logic
+scripts/              -> TypeScript application and browser API types
 styles/               -> UI styles
 tests/                -> Offline browser test
 vendor/
@@ -74,6 +81,8 @@ vendor/
 index.html            -> Application entry point
 manifest.webmanifest  -> PWA manifest
 offline.html          -> Offline fallback page
-playwright.config.js  -> Browser test configuration
-sw.js                 -> Service worker
+playwright.config.ts  -> Browser test configuration
+sw.ts                 -> Service worker, compiled to dist/sw.js
+tsconfig.json         -> Application, tooling, and test type checks
+tsconfig.worker.json  -> Service-worker type checks
 ```
