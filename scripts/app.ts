@@ -217,6 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
           (button) => {
             const { waiting } = registration;
             if (!waiting) {
+              // Another tab may already have activated the update.
+              window.location.reload();
               return true;
             }
 

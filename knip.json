@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/knip/schema.json",
   "entry": ["scripts/app.ts", "sw.ts"],
-  "ignore": ["vendor/ruffle/**"],
   "ignoreDependencies": ["@commitlint/cli", "renovate"]
 }

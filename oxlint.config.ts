@@ -5,7 +5,6 @@ import core from "ultracite/oxlint/core";
 // preset directly until https://github.com/oxc-project/oxc/issues/20067 is fixed.
 export default defineConfig({
   ...core,
-  ignorePatterns: [...(core.ignorePatterns ?? []), "**/vendor"],
   rules: {
     ...core.rules,
     "func-style": "off",

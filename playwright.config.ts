@@ -3,7 +3,7 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   forbidOnly: Boolean(process.env["CI"]),
   outputDir: "test-results",
-  reporter: "line",
+  reporter: "list",
   testDir: "./tests",
   use: {
     baseURL: "http://127.0.0.1:4173",
@@ -19,4 +19,6 @@ export default defineConfig({
     reuseExistingServer: false,
     url: "http://127.0.0.1:4173",
   },
+  // Ruffle uses CPU rendering in headless Chromium.
+  workers: 1,
 });

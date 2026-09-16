@@ -1,6 +1,22 @@
 import { expect, test } from "@playwright/test";
 
-test("keeps the player available offline", async ({ context, page }) => {
+import { expectGameLoaded, goOffline } from "./helpers";
+
+test("does not serve the app for an unknown URL", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await expect
+    .poll(() =>
+      page.evaluate(() => Boolean(navigator.serviceWorker.controller))
+    )
+    .toBe(true);
+
+  const response = await page.goto("/missing/page");
+  expect(response?.status()).toBe(404);
+  await expect(page.locator("#selector")).toHaveCount(0);
+});
+
+test("keeps the player available offline", async ({ page }) => {
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(String(error)));
 
@@ -8,21 +24,18 @@ test("keeps the player available offline", async ({ context, page }) => {
   await expect(page.locator("#selector")).toBeVisible();
   await expect(page.locator("ruffle-player")).toBeAttached();
   await page.evaluate(() => navigator.serviceWorker.ready);
-  await page.reload({ waitUntil: "domcontentloaded" });
   await expect
     .poll(() =>
       page.evaluate(() => Boolean(navigator.serviceWorker?.controller))
     )
     .toBe(true);
 
-  await context.setOffline(true);
+  await goOffline(page);
   await expect(page.locator("#connection")).toHaveText("Offline");
   await page.reload({ waitUntil: "domcontentloaded" });
 
   await expect(page.locator("ruffle-player")).toBeAttached();
-  await expect
-    .poll(() => page.evaluate(() => Boolean(window.RufflePlayer)))
-    .toBe(true);
+  await expectGameLoaded(page);
 
   const [gameResponse] = await Promise.all([
     page.waitForResponse("**/assets/swf/KingdomRush.swf"),
@@ -30,8 +43,10 @@ test("keeps the player available offline", async ({ context, page }) => {
   ]);
   expect(gameResponse.ok()).toBe(true);
   expect(gameResponse.fromServiceWorker()).toBe(true);
+  await expectGameLoaded(page);
   await expect(page).toHaveURL(/\?game=KingdomRush$/u);
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.locator("#selector")).toHaveValue("KingdomRush");
+  await expectGameLoaded(page);
   expect(pageErrors).toEqual([]);
 });

@@ -1,5 +1,8 @@
 interface RufflePlayerElement extends HTMLElement {
-  ruffle: () => { load: (url: string) => Promise<void> };
+  ruffle: () => {
+    load: (url: string) => Promise<void>;
+    readonly readyState: 0 | 1 | 2;
+  };
 }
 
 interface BeforeInstallPromptEvent extends Event {
