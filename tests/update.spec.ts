@@ -10,15 +10,23 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
 import { buildServiceWorker } from "../scripts/build-service-worker";
 import { expectGameLoaded, goOffline } from "./helpers";
 
+const suspendGame = (page: Page) =>
+  page
+    .locator("ruffle-player")
+    .evaluate((player: RufflePlayerElement) => player.ruffle().suspend());
+
 test("updates changed assets after Reload without downloading unchanged games", async ({
   context,
   page,
 }) => {
+  // CI runs two Ruffle players on CPU while installing three service workers.
+  test.setTimeout(60_000);
   const output = fileURLToPath(new URL("../dist", import.meta.url));
   const entries = readdirSync(output).filter((entry) => entry !== "test-sites");
   const fixtures = path.join(output, "test-sites");
@@ -50,12 +58,14 @@ test("updates changed assets after Reload without downloading unchanged games", 
       )
       .toBe(true);
     await expectGameLoaded(page);
+    await suspendGame(page);
 
     const otherPage = await context.newPage();
     await otherPage.bringToFront();
     await otherPage.goto(`${url}?game=KingdomRush`);
     await expect(otherPage.locator("#selector")).toHaveValue("KingdomRush");
     await expectGameLoaded(otherPage);
+    await suspendGame(otherPage);
 
     await page.evaluate(async () => {
       await caches.open("flash-games-v8-shell");
@@ -143,15 +153,16 @@ test("updates changed assets after Reload without downloading unchanged games", 
     );
     await goOffline(page);
     await page.bringToFront();
+    await expect(page.locator("#connection")).toHaveText("Offline");
     await Promise.all([page.waitForEvent("load"), reload.click()]);
 
     await expect(page.locator("body")).toHaveCSS(
       "background-color",
       "rgb(11, 22, 33)"
     );
-    await expect(page.locator("#connection")).toHaveText("Offline");
     await expect(page).toHaveURL(/\?game=MusicCatch2$/u);
     await expectGameLoaded(page);
+    await suspendGame(page);
     expect(
       await page.evaluate(async () => {
         const response = await fetch("assets/added.txt");
