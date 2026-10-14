@@ -25,7 +25,7 @@ online load.
 Install dependencies, build, and serve the site:
 
 ```bash
-bun i
+bun ci
 bun dev
 ```
 
