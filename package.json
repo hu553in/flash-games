@@ -40,7 +40,7 @@
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "^7.0.2",
-    "ultracite": "^7.12.4",
+    "ultracite": "^8.0.0",
     "workbox-build": "^7.4.1"
   },
   "packageManager": "bun@1.4.3"
