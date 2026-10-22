@@ -43,5 +43,5 @@
     "ultracite": "^8.0.0",
     "workbox-build": "^7.4.1"
   },
-  "packageManager": "bun@1.4.3"
+  "packageManager": "bun@1.4.4"
 }
