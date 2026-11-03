@@ -50,7 +50,7 @@ until reloaded.
 ## Development
 
 ```bash
-bun check
+bun check:all
 bun check:fix
 bun check:types
 bun check:offline
