@@ -1,5 +1,5 @@
 {
   "$schema": "./node_modules/knip/schema.json",
   "entry": ["scripts/app.ts", "sw.ts"],
-  "ignoreDependencies": ["@commitlint/cli", "renovate"]
+  "ignoreDependencies": ["@commitlint/cli"]
 }

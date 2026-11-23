@@ -42,10 +42,9 @@ command and serves `dist/`.
 - Game files live in `assets/swf`
 - Published assets are precached automatically; no file lists or cache versions need manual updates
 
-Renovate updates Ruffle through `package.json` and `bun.lock`. Workbox updates changed assets and
-removes obsolete cache entries while reusing unchanged files. A new service worker waits for the
-in-app `Reload` action before taking over open pages. Other tabs keep running their current game
-until reloaded.
+Workbox updates changed assets and removes obsolete cache entries while reusing unchanged files. A
+new service worker waits for the in-app `Reload` action before taking over open pages. Other tabs
+keep running their current game until reloaded.
 
 ## Development
 

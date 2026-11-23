@@ -13,35 +13,39 @@
     "lint": "ultracite check && stylelint --max-warnings 0 --ignore-path .gitignore 'styles/**/*.css'",
     "lint:fix": "ultracite fix && stylelint --max-warnings 0 --fix --ignore-path .gitignore 'styles/**/*.css'",
     "check:hooks": "lefthook validate",
-    "check:workflows": "bunx github-actionlint",
-    "check:renovate": "bunx --package renovate renovate-config-validator --strict --no-global renovate.json",
+    "check:workflows": "bunx --minimum-release-age 259200 github-actionlint",
     "check:types": "bun check && bun check -p tsconfig.worker.json",
     "check:unused": "knip",
     "check:vulns": "bun audit --prod --audit-level=high",
     "check:offline": "bun playwright:install && bun test:offline",
-    "check:all": "bun lint && bun check:hooks && bun check:workflows && bun check:renovate && bun check:types && bun check:unused && bun check:vulns && bun check:offline",
+    "check:all": "bun lint && bun check:hooks && bun check:workflows && bun check:types && bun check:unused && bun check:vulns && bun check:offline",
     "check:fix": "bun lint:fix && bun check:all",
     "test:offline": "playwright test",
     "playwright:install": "playwright install --only-shell chromium",
     "prepare": "if [ -n \"${CI:-}\" ] || [ \"${LEFTHOOK:-}\" = \"0\" ]; then exit 0; fi; lefthook install"
   },
   "dependencies": {
-    "@ruffle-rs/ruffle": "^0.7.0",
+    "@ruffle-rs/ruffle": "^0.8.0",
     "workbox-core": "^7.4.1",
     "workbox-precaching": "^7.4.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
-    "@types/node": "^26.6.4",
-    "knip": "^6.44.1",
-    "lefthook": "^2.1.17",
-    "oxfmt": "^0.78.0",
-    "oxlint": "^1.87.0",
-    "stylelint": "^18.0.0",
-    "stylelint-config-standard": "^41.0.0",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "knip": "^6.47.0",
+    "lefthook": "^2.2.2",
+    "oxfmt": "^0.79.0",
+    "oxlint": "^1.94.0",
+    "stylelint": "^18.1.0",
+    "stylelint-config-standard": "^41.1.0",
     "typescript": "^7.0.2",
-    "ultracite": "^8.0.0",
+    "ultracite": "^8.3.1",
     "workbox-build": "^7.4.1"
   },
-  "packageManager": "bun@1.4.4"
+  "overrides": {
+    "workbox-build": {
+      "glob": "^14.0.6"
+    }
+  },
+  "packageManager": "bun@1.4.5"
 }
