@@ -14,8 +14,8 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command:
-      "bun run build && python3 -m http.server 4173 --bind 127.0.0.1 --directory dist",
+    command: "bun run serve",
+    env: { BUN_PORT: "4173" },
     reuseExistingServer: false,
     url: "http://127.0.0.1:4173",
   },

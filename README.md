@@ -17,8 +17,7 @@ online load.
 
 ## Requirements
 
-- Bun for dependencies, builds, and checks
-- Python for local serving and the offline check
+Use the Bun version declared in [package.json](package.json).
 
 ## Setup
 
@@ -29,7 +28,7 @@ bun ci
 bun dev
 ```
 
-Open <http://localhost:5173>. Restart `bun dev` after source changes to rebuild the site.
+Open <http://127.0.0.1:5173>. Restart `bun dev` after source changes to rebuild the site.
 
 `bun run build` compiles the application and service worker with Bun and copies static assets to
 `dist/`. It copies Ruffle from `@ruffle-rs/ruffle`, including its licenses, then generates the
@@ -50,10 +49,9 @@ keep running their current game until reloaded.
 
 ```bash
 bun check:all
-bun check:fix
-bun check:types
-bun check:offline
 ```
+
+Use `bun check:fix` to apply supported fixes before the full check.
 
 `bun check:types` checks application, tooling, and test types, with a separate WebWorker environment
 for `sw.ts`.

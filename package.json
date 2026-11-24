@@ -9,9 +9,9 @@
   "type": "module",
   "scripts": {
     "build": "bun scripts/build.ts",
-    "dev": "bun run build && python3 -m http.server 5173 --directory dist",
-    "lint": "ultracite check && stylelint --max-warnings 0 --ignore-path .gitignore 'styles/**/*.css'",
-    "lint:fix": "ultracite fix && stylelint --max-warnings 0 --fix --ignore-path .gitignore 'styles/**/*.css'",
+    "dev": "BUN_PORT=5173 bun run serve",
+    "lint": "bun fmt --check && oxlint && stylelint --max-warnings 0 --ignore-path .gitignore 'styles/**/*.css'",
+    "lint:fix": "oxlint --fix || oxlint --fix; stylelint --max-warnings 0 --fix --ignore-path .gitignore 'styles/**/*.css' && bun fmt && oxlint",
     "check:hooks": "lefthook validate",
     "check:workflows": "bunx --minimum-release-age 259200 github-actionlint",
     "check:types": "bun check && bun check -p tsconfig.worker.json",
@@ -22,7 +22,8 @@
     "check:fix": "bun lint:fix && bun check:all",
     "test:offline": "playwright test",
     "playwright:install": "playwright install --only-shell chromium",
-    "prepare": "if [ -n \"${CI:-}\" ] || [ \"${LEFTHOOK:-}\" = \"0\" ]; then exit 0; fi; lefthook install"
+    "prepare": "if [ -n \"${CI:-}\" ] || [ \"${LEFTHOOK:-}\" = \"0\" ]; then exit 0; fi; lefthook install",
+    "serve": "bun run build && bun -e 'const server = Bun.serve({ development: false, hostname: \"127.0.0.1\", routes: { \"/*\": { dir: \"dist\" } } }); console.log(server.url.href);'"
   },
   "dependencies": {
     "@ruffle-rs/ruffle": "^0.8.0",
@@ -34,11 +35,9 @@
     "@types/node": "^26.6.6",
     "knip": "^6.47.0",
     "lefthook": "^2.2.2",
-    "oxfmt": "^0.79.0",
     "oxlint": "^1.94.0",
     "stylelint": "^18.1.0",
     "stylelint-config-standard": "^41.1.0",
-    "typescript": "^7.0.2",
     "ultracite": "^8.3.1",
     "workbox-build": "^7.4.1"
   },

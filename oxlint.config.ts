@@ -6,7 +6,6 @@ export default defineConfig({
   rules: {
     "func-style": "off",
     "promise/avoid-new": "off",
-    "promise/prefer-await-to-callbacks": "off",
     // ServiceWorker#postMessage has no targetOrigin parameter.
     "unicorn/require-post-message-target-origin": "off",
   },
